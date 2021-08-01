@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemies : MonoBehaviour
 {
-    public float speed = 7f;
+    [HideInInspector]public float speed = 7f;
     Rigidbody2D rb;
     // Start is called before the first frame update
     void Awake()

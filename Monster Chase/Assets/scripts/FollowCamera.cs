@@ -17,6 +17,10 @@ public class FollowCamera : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        if (!player)
+        {
+            return; //In a void fuction, nothing is executed after return statement
+        }
         camPos = transform.position;
         camPos.x = player.position.x;
         if(camPos.x < minX)
