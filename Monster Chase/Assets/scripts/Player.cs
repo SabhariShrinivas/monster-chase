@@ -6,15 +6,20 @@ public class Player : MonoBehaviour
 {
     [SerializeField] float moveForce = 10f;
     [SerializeField] float jumpForce = 10f;
+    [SerializeField] AudioClip deathClip;
+    [SerializeField] AudioClip jumpClip;
     private float movementX;
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private Animator anim;
+    private AudioSource audioSource;
     private string walkAnimation = "walk";
     private bool isGrounded;
+
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -59,6 +64,7 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             isGrounded = false;
+            audioSource.PlayOneShot(jumpClip);
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
         }
     }
@@ -70,11 +76,15 @@ public class Player : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Enemy"))
         {
+            audioSource.PlayOneShot(deathClip);
             Destroy(gameObject);
+            Score.instance.StopScore();
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        audioSource.PlayOneShot(deathClip);
         Destroy(gameObject);
+        Score.instance.StopScore();
     }
 }
